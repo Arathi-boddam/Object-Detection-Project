@@ -13,7 +13,7 @@ data/videos/
 data/labels/
 .ultralytics/
 runs/
-extract_frames.py
+/extract_frames.py
 yolov8n.pt
 yolov8s.pt
 models/
