@@ -6,7 +6,6 @@ __pycache__/
 .next/
 frontend/node_modules/
 frontend/.next/
-results/*.json
 .ultralytics/
 runs/
 data/voc_dataset/
