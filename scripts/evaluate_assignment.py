@@ -50,35 +50,29 @@ def measure_latency(model: YOLO, images: list[Path], imgsz: int, conf: float) ->
     return round(avg_latency, 2), round(p95_latency, 2)
 
 
-def demo_metrics() -> dict[str, float]:
-    return {
-        "map50": round(random.uniform(0.60, 0.90), 4),
-        "map50_95": round(random.uniform(0.70, 0.88), 4),
-        "precision": round(random.uniform(0.80, 0.95), 4),
-        "recall": round(random.uniform(0.75, 0.90), 4),
+def evaluate_metrics(model, experiment: Experiment) -> dict[str, float]:
+    metrics = model.val(
+        data=str(experiment.data_yaml),
+        split=experiment.split,
+        imgsz=experiment.imgsz,
+        verbose=False,
+    )
+    metric_values = {
+        "map50": round(float(metrics.box.map50), 4),
+        "map50_95": round(float(metrics.box.map), 4),
+        "precision": round(float(metrics.box.mp), 4),
+        "recall": round(float(metrics.box.mr), 4),
     }
+    return metric_values
+    
 
 
-def evaluate_experiment(experiment: Experiment, use_demo_metrics: bool = False) -> dict:
+def evaluate_experiment(experiment: Experiment) -> dict:
     model = YOLO(str(experiment.model_path))
     images = load_images(experiment.image_dir)
     avg_latency_ms, p95_latency_ms = measure_latency(model, images, experiment.imgsz, experiment.conf)
 
-    if use_demo_metrics:
-        metric_values = demo_metrics()
-    else:
-        metrics = model.val(
-            data=str(experiment.data_yaml),
-            split=experiment.split,
-            imgsz=experiment.imgsz,
-            verbose=False,
-        )
-        metric_values = {
-            "map50": round(float(metrics.box.map50), 4),
-            "map50_95": round(float(metrics.box.map), 4),
-            "precision": round(float(metrics.box.mp), 4),
-            "recall": round(float(metrics.box.mr), 4),
-        }
+    metric_values = evaluate_metrics(model, experiment)
 
     return {
         "experiment": experiment.label,

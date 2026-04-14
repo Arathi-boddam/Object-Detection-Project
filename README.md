@@ -1,75 +1,131 @@
 # Object Detection Inference Optimization Project
 
-This repository is set up for **Option 2: Inference Optimization**.
+This repository implements an end-to-end inference optimization workflow for 2D object detection.
 
-## What is included
+The project includes:
 
-- A FastAPI backend with:
-  - `POST /detect/image`
-  - `POST /detect/video`
-  - model/runtime selection for `pytorch`, `torchscript`, `onnx`, `tensorrt`, `openvino`
-- A Next.js frontend for:
-  - uploading image/video
-  - calling the backend
-  - showing latency
-  - drawing bounding boxes for image inference
-- Scripts to:
-  - export YOLO checkpoints into optimized runtime formats
-  - benchmark latency over a folder of evaluation images
-  - evaluate assignment experiments and generate result tables
-- A submission-ready report draft in `REPORT.md`
+- a FastAPI backend for image and video object detection
+- a Next.js frontend for upload, visualization, and runtime comparison
+- support for multiple model runtimes such as `pytorch`, `torchscript`, and `onnx`
+- scripts for export, benchmarking, and assignment evaluation
+- CSV logging for both inference runs and evaluation metrics
 
-## Recommended experiment design
+## Current Models and Runtimes
 
-Use at least two strong models, for example:
+Primary models:
 
-- `yolov8n.pt`
-- `yolov8s.pt`
+- `yolov8n`
+- `yolov8s`
 
-Use at least two acceleration methods, for example:
+Supported runtimes in the codebase:
 
+- `pytorch`
 - `torchscript`
 - `onnx`
-
-If your machine supports them, you can also export and compare:
-
 - `tensorrt`
 - `openvino`
 
-## Suggested folder usage
+Current comparison setup:
 
-- `data/images/`: evaluation images from your own dataset
-- `data/videos/`: evaluation videos from your own dataset
-- `data/labels/`: your own annotations
-- `models/`: exported runtime artifacts
+- baseline: `yolov8n` with `pytorch`
+- strong model: `yolov8s` with `pytorch`
+- optimization 1: `yolov8n` with `torchscript`
+- optimization 2: `yolov8n` with `onnx`
 
-## Backend setup
+## System Architecture
+
+### Backend
+
+The FastAPI backend is implemented in [backend/main.py](/Users/boddamarathireddy/Desktop/object-detection-project/backend/main.py).
+
+Available endpoints:
+
+- `GET /health`
+- `GET /models`
+- `GET /metrics/map`
+- `POST /detect/image`
+- `POST /detect/video`
+
+The backend:
+
+- loads the requested model artifact
+- performs image or video inference
+- returns detections and latency
+- attaches evaluation metrics for the selected model/runtime
+- logs every run to [results/inference_runs.csv](/Users/boddamarathireddy/Desktop/object-detection-project/results/inference_runs.csv)
+
+### Frontend
+
+The frontend is implemented in [frontend/app/page.tsx](/Users/boddamarathireddy/Desktop/object-detection-project/frontend/app/page.tsx).
+
+The UI supports:
+
+- image upload with bounding-box overlays
+- video upload with frame-based summary metrics
+- model/runtime selection
+- latency and detection summaries
+- dataset evaluation metrics display
+- recent run history
+
+## Dataset Layout
+
+The current dataset config is [data/data.yaml](/Users/boddamarathireddy/Desktop/object-detection-project/data/data.yaml).
+
+The current evaluation split uses:
+
+- validation images: [data/valid/images](/Users/boddamarathireddy/Desktop/object-detection-project/data/valid/images)
+- validation labels: [data/valid/labels](/Users/boddamarathireddy/Desktop/object-detection-project/data/valid/labels)
+
+Current class list:
+
+- `baloon`
+- `building_Detection`
+- `cake`
+- `gift`
+- `person_Detection`
+- `pink`
+- `tree_Detection`
+
+## Setup
+
+### Backend
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r backend/requirements.txt
-python3 -m uvicorn backend.main:app --reload
+python3 -m uvicorn backend.main:app --reload --reload-exclude ".venv/*"
 ```
 
-API docs will be available at `http://127.0.0.1:8000/docs`.
+Backend URLs:
 
-## Frontend setup
+- API docs: `http://127.0.0.1:8000/docs`
+- health check: `http://127.0.0.1:8000/health`
+
+### Frontend
 
 ```bash
 cd frontend
 npm install
-pip install -r backend/requirements.txt
+npm run dev
 ```
 
-Set `NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000` if needed.
+Frontend URL:
 
-## Export optimized models
+- `http://localhost:3000`
 
-Put your source checkpoints in the project root first, for example:
+If needed:
 
-- `yolov8n.pt`
-- `yolov8s.pt`
+```bash
+export NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000
+```
+
+## Export Optimized Models
+
+Put the PyTorch checkpoints in the project root first:
+
+- [yolov8n.pt](/Users/boddamarathireddy/Desktop/object-detection-project/yolov8n.pt)
+- [yolov8s.pt](/Users/boddamarathireddy/Desktop/object-detection-project/yolov8s.pt)
 
 Then run:
 
@@ -77,73 +133,70 @@ Then run:
 python3 scripts/export_models.py
 ```
 
-## Benchmark latency
+This generates artifacts under [models](/Users/boddamarathireddy/Desktop/object-detection-project/models).
 
-```bash
-python3 scripts/benchmark_models.py \
-  --images data/images \
-  --model models/yolov8n.onnx
-```
+## Run Evaluation
 
-## Run the full assignment evaluation
-
-Add your own annotated dataset first, then run:
+Use this command to generate evaluation metrics from the annotated validation set:
 
 ```bash
 python3 scripts/evaluate_assignment.py \
-  --experiment "baseline_pytorch|yolov8n.pt|data/dataset.yaml|640|0.25|val|data/images/val" \
-  --experiment "strong_model_pytorch|yolov8s.pt|data/dataset.yaml|640|0.25|val|data/images/val" \
-  --experiment "optimized_torchscript|models/yolov8n.torchscript|data/dataset.yaml|640|0.25|val|data/images/val" \
-  --experiment "optimized_onnx|models/yolov8n.onnx|data/dataset.yaml|640|0.25|val|data/images/val"
+  --experiment "baseline_pytorch|yolov8n.pt|data/data.yaml|640|0.25|val|data/valid/images"
 ```
 
-This writes:
+Evaluation outputs:
 
-- `results/assignment_results.json`
-- `results/assignment_results.csv`
-- values you can paste directly into `REPORT.md`
+- [results/assignment_results.csv](/Users/boddamarathireddy/Desktop/object-detection-project/results/assignment_results.csv)
+- [results/assignment_results.json](/Users/boddamarathireddy/Desktop/object-detection-project/results/assignment_results.json)
 
-## What to report for the assignment
+## Inference Logging
 
-Your final report should include:
+Every image or video run is appended to:
 
-1. Baseline model/runtime:
-   - Example: `yolov8n.pt` with PyTorch inference
-2. Improved inference pipelines:
-   - Example: `yolov8n.onnx`
-   - Example: `yolov8s.torchscript`
-3. Accuracy comparison:
-   - mAP on your own annotated data
-4. Speed comparison:
-   - average latency
-   - p95 latency
-   - FPS if you want to add it
-5. Explanation:
-   - why these models were chosen
-   - why these acceleration methods were chosen
-   - tradeoff between speed and accuracy
+- [results/inference_runs.csv](/Users/boddamarathireddy/Desktop/object-detection-project/results/inference_runs.csv)
 
-## Minimum submission story
+That file stores:
 
-An easy credible setup for the rubric is:
+- media name and type
+- model and runtime
+- artifact
+- latency
+- detection counts
+- video frame counts and duration
+- top detections
+- matched evaluation metrics
 
-- Baseline: `yolov8n` with PyTorch
-- Model 2: `yolov8s` with PyTorch
-- Optimization 1: `yolov8n` with TorchScript
-- Optimization 2: `yolov8n` with ONNX
+## Current Results
 
-That gives you:
+Current values from [results/assignment_results.csv](/Users/boddamarathireddy/Desktop/object-detection-project/results/assignment_results.csv):
 
-- two strong-performing models
-- a backend
-- a frontend
-- two acceleration methods
-- measurable latency and accuracy comparisons
+| Experiment | Split | Images | mAP@50 | mAP@50:95 | Precision | Recall | Avg Latency (ms) | P95 Latency (ms) | FPS |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| `baseline_pytorch` | `val` | 4 | 72.82% | 82.70% | 92.59% | 80.91% | 84.28 | 158.73 | 11.87 |
 
-## Files you will submit
+## Known Limitation
 
-- source code in this repository
-- your own annotated images/videos under `data/`
-- generated model artifacts under `models/`
-- completed results under `results/`
-- completed report in `REPORT.md`
+If you evaluate a raw COCO-pretrained model such as `yolov8n.pt` directly against a custom dataset with non-COCO class definitions, accuracy can be very low or zero. That is expected. Meaningful `mAP` requires either:
+
+- class definitions aligned with the pretrained model, or
+- a custom model trained or fine-tuned on your annotated classes
+
+## UI Screenshots
+
+Main dashboard:
+
+![Dashboard UI](results/Output_screenshots/Screenshot%202026-04-13%20at%2010.36.39%E2%80%AFPM.png)
+
+Evaluation and run metrics:
+
+![Metrics UI](results/Output_screenshots/Screenshot%202026-04-13%20at%2011.02.57%E2%80%AFPM.png)
+
+## Important Files
+
+- [backend/main.py](/Users/boddamarathireddy/Desktop/object-detection-project/backend/main.py)
+- [frontend/app/page.tsx](/Users/boddamarathireddy/Desktop/object-detection-project/frontend/app/page.tsx)
+- [frontend/app/globals.css](/Users/boddamarathireddy/Desktop/object-detection-project/frontend/app/globals.css)
+- [scripts/export_models.py](/Users/boddamarathireddy/Desktop/object-detection-project/scripts/export_models.py)
+- [scripts/benchmark_models.py](/Users/boddamarathireddy/Desktop/object-detection-project/scripts/benchmark_models.py)
+- [scripts/evaluate_assignment.py](/Users/boddamarathireddy/Desktop/object-detection-project/scripts/evaluate_assignment.py)
+- [REPORT.md](/Users/boddamarathireddy/Desktop/object-detection-project/REPORT.md)
