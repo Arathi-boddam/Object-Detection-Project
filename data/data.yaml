@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 7
+names: ['baloon', 'building_Detection', 'cake', 'gift', 'person_Detection', 'pink', 'tree_Detection']
+
+roboflow:
+  workspace: rams-workspace-v8huf
+  project: detection-lruyc
+  version: 1
+  license: Private
+  url: https://app.roboflow.com/rams-workspace-v8huf/detection-lruyc/1
