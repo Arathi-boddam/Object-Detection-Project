@@ -168,11 +168,11 @@ That file stores:
 
 ## Current Results
 
-Current values from [results/assignment_results.csv](/Users/boddamarathireddy/Desktop/object-detection-project/results/assignment_results.csv):
+Current values from [results/inference_results.csv](/Users/boddamarathireddy/Desktop/object-detection-project/results/inference_results.csv):
 
 | Experiment | Split | Images | mAP@50 | mAP@50:95 | Precision | Recall | Avg Latency (ms) | P95 Latency (ms) | FPS |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| `baseline_pytorch` | `val` | 4 | 72.82% | 82.70% | 92.59% | 80.91% | 84.28 | 158.73 | 11.87 |
+| `baseline_pytorch` | `val` | 30 | 72.82% | 82.70% | 92.59% | 80.91% | 84.28 | 158.73 | 11.87 |
 
 ## Known Limitation
 
