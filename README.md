@@ -43,24 +43,6 @@ If your machine supports them, you can also export and compare:
 - `data/labels/`: your own annotations
 - `models/`: exported runtime artifacts
 
-Recommended structure:
-
-```text
-data/
-  images/
-    train/
-    val/
-    test/
-  labels/
-    train/
-    val/
-    test/
-  videos/
-    raw/
-```
-
-See [ANNOTATION_GUIDE.md](/Users/boddamarathireddy/Desktop/object-detection-project/ANNOTATION_GUIDE.md) for the annotation workflow.
-
 ## Backend setup
 
 ```bash
@@ -77,7 +59,7 @@ API docs will be available at `http://127.0.0.1:8000/docs`.
 ```bash
 cd frontend
 npm install
-npm run dev
+pip install -r backend/requirements.txt
 ```
 
 Set `NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000` if needed.

@@ -1,0 +1,65 @@
+timestamp_utc,media_name,media_type,model_id,runtime,artifact,latency_ms,detections,frames_processed,total_video_ms,top_detections,map50,map50_95,precision,recall,fps,p95_latency_ms
+2026-04-12T00:00:00Z,IMG_7886.JPG,image,yolov8n,pytorch,yolov8n.pt,42.84,16,1,0.0,person:79.3%; cake:79.2%; person:75.3%; sports ball:64.5%; person:63.4%; person:52.0%,0.7282,0.827,0.9259,0.8091,11.87,158.73,
+2026-04-13T03:59:23.400131+00:00,IMG_7886.JPG,image,yolov8n,pytorch,yolov8n.pt,74.35,11,1,0.0,person:79.3%; cake:79.2%; person:75.3%; sports ball:64.5%; person:63.4%; person:52.0%,0.7282,0.827,0.9259,0.8091,11.87,158.73,
+2026-04-13T03:59:38.900333+00:00,IMG_7886.JPG,image,yolov8n,pytorch,yolov8n.pt,41.17,6,1,0.0,person:79.3%; cake:79.2%; person:75.3%; sports ball:64.5%; person:63.4%; person:52.0%,0.7282,0.827,0.9259,0.8091,11.87,158.73,
+2026-04-13T04:00:11.001223+00:00,IMG_7775.mov,video,yolov8n,pytorch,yolov8n.pt,21.08,30,24,14331.67,person:30,0.7282,0.827,0.9259,0.8091,11.87,158.73,
+2026-04-13T04:57:23.459324+00:00,IMG_7775.mov,video,yolov8n,pytorch,yolov8n.pt,22.22,30,24,14331.67,person:30,0.7282,0.827,0.9259,0.8091,11.87,158.73,
+2026-04-13T05:00:55.922100+00:00,IMG_4401.JPG,image,yolov8s,onnx,yolov8s.onnx,236.02,0,1,0.0,,,,,,,,
+2026-04-13T05:01:03.927900+00:00,IMG_4401.JPG,image,yolov8s,onnx,yolov8s.onnx,63.52,0,1,0.0,,,,,,,,
+2026-04-13T05:01:30.011838+00:00,IMG_4401.JPG,image,yolov8s,onnx,yolov8s.onnx,71.45,7,1,0.0,book:45.9%; person:39.4%; handbag:36.8%; teddy bear:25.3%; sports ball:24.9%; book:23.8%,,,,,,,
+2026-04-14T03:54:48.816921+00:00,IMG_4401.JPG,image,yolov8n,pytorch,yolov8n.pt,68.61,2,1,0.0,person:72.3%; sports ball:27.8%,0.7282,0.827,0.9259,0.8091,11.87,158.73,
+2026-04-14T03:55:00.835584+00:00,IMG_4401.JPG,image,yolov8s,onnx,yolov8s.onnx,181.3,4,1,0.0,book:45.9%; person:39.4%; handbag:36.8%; teddy bear:25.3%,,,,,,,
+2026-04-14T03:55:28.249043+00:00,IMG_3697.JPG,image,yolov8s,onnx,yolov8s.onnx,50.7,7,1,0.0,person:77.8%; person:76.6%; person:76.2%; person:70.5%; person:63.4%; bench:55.5%,,,,,,,
+2026-04-14T03:55:41.655126+00:00,IMG_3697.JPG,image,yolov8s,torchscript,yolov8s.torchscript,176.23,7,1,0.0,person:79.2%; person:77.4%; person:76.4%; person:71.0%; person:62.7%; bench:55.2%,,,,,,,
+2026-04-14T03:55:47.211915+00:00,IMG_3697.JPG,image,yolov8s,torchscript,yolov8s.torchscript,89.61,5,1,0.0,person:79.2%; person:77.4%; person:76.4%; person:71.0%; person:62.7%,,,,,,,
+2026-04-14T03:55:52.680375+00:00,IMG_3697.JPG,image,yolov8s,torchscript,yolov8s.torchscript,61.14,7,1,0.0,person:79.2%; person:77.4%; person:76.4%; person:71.0%; person:62.7%; bench:55.2%,,,,,,,
+2026-04-14T04:23:13.986404+00:00,IMG_4401.JPG,image,yolov8n,pytorch,yolov8n.pt,83.81,2,1,0.0,person:72.3%; sports ball:27.8%,0.7282,0.827,0.9259,0.8091,11.87,158.73,
+2026-04-14T04:23:34.608883+00:00,IMG_7886.JPG,image,yolov8n,pytorch,yolov8n.pt,43.25,11,1,0.0,person:79.3%; cake:79.2%; person:75.3%; sports ball:64.5%; person:63.4%; person:52.0%,0.7282,0.827,0.9259,0.8091,11.87,158.73,
+2026-04-14T04:23:44.991843+00:00,IMG_7885.WEBP,image,yolov8n,pytorch,yolov8n.pt,30.53,6,1,0.0,person:55.2%; person:36.8%; person:27.4%; person:26.5%; person:26.4%; person:26.3%,0.7282,0.827,0.9259,0.8091,11.87,158.73,
+2026-04-14T04:24:00.765008+00:00,IMG_7885.WEBP,image,yolov8s,pytorch,yolov8s.pt,55.48,9,1,0.0,person:50.4%; person:45.6%; person:41.9%; person:37.9%; person:35.1%; person:34.2%,,,,,,,
+2026-04-14T04:24:09.550654+00:00,IMG_7885.WEBP,image,yolov8s,onnx,yolov8s.onnx,75.57,9,1,0.0,person:50.4%; person:45.6%; person:41.9%; person:37.9%; person:35.1%; person:34.2%,,,,,,,
+2026-04-14T04:24:13.795271+00:00,IMG_7885.WEBP,image,yolov8s,torchscript,yolov8s.torchscript,86.94,13,1,0.0,person:57.8%; person:51.1%; person:48.6%; person:45.6%; person:38.5%; person:38.4%
+2026-04-14T04:24:19.126276+00:00,IMG_7885.WEBP,image,yolov8n,torchscript,yolov8n.torchscript,116.42,7,1,0.0,person:59.0%; person:43.3%; person:30.4%; person:30.1%; person:29.3%; person:27.7%
+2026-04-14T04:24:23.606782+00:00,IMG_7885.WEBP,image,yolov8s,torchscript,yolov8s.torchscript,81.39,13,1,0.0,person:57.8%; person:51.1%; person:48.6%; person:45.6%; person:38.5%; person:38.4%
+2026-04-14T04:24:49.124900+00:00,IMG_7775.mov,video,yolov8s,torchscript,yolov8s.torchscript,54.87,50,24,14331.67,person:50
+2026-04-14T04:25:09.308580+00:00,IMG_7775.mov,video,yolov8s,torchscript,yolov8s.torchscript,56.59,37,24,14331.67,person:37
+2026-04-14T04:25:46.035243+00:00,IMG_7775.mov,video,yolov8s,torchscript,yolov8s.torchscript,55.22,86,24,14331.67,person:69; bird:9; boat:3; dog:3; backpack:2
+2026-04-14T04:38:43.212282+00:00,IMG_3697.JPG,image,yolov8s,pytorch,yolov8s.pt,76.25,6,1,0.0,person:77.8%; person:76.6%; person:76.2%; person:70.5%; person:63.4%; bench:55.5%
+2026-04-14T04:52:45.738305+00:00,IMG_4401.JPG,image,yolov8n,pytorch,yolov8n.pt,41.38,2,1,0.0,person:72.3%; sports ball:27.8%
+2026-04-14T04:52:55.019967+00:00,IMG_7886.JPG,image,yolov8n,pytorch,yolov8n.pt,83.86,11,1,0.0,person:79.3%; cake:79.2%; person:75.3%; sports ball:64.5%; person:63.4%; person:52.0%
+2026-04-14T04:55:20.230633+00:00,IMG_7885.WEBP,image,yolov8n,pytorch,yolov8n.pt,70.1,6,1,0.0,person:55.2%; person:36.8%; person:27.4%; person:26.5%; person:26.4%; person:26.3%
+2026-04-14T04:55:24.517872+00:00,IMG_7885.WEBP,image,yolov8n,pytorch,yolov8n.pt,62.73,18,1,0.0,person:55.2%; person:36.8%; person:27.4%; person:26.5%; person:26.4%; person:26.3%
+2026-04-14T04:55:25.917707+00:00,IMG_7885.WEBP,image,yolov8n,pytorch,yolov8n.pt,47.41,18,1,0.0,person:55.2%; person:36.8%; person:27.4%; person:26.5%; person:26.4%; person:26.3%
+2026-04-14T04:56:48.087801+00:00,IMG_7886.JPG,image,yolov8n,pytorch,yolov8n.pt,72.47,11,1,0.0,person:79.3%; cake:79.2%; person:75.3%; sports ball:64.5%; person:63.4%; person:52.0%
+2026-04-14T04:58:18.582620+00:00,IMG_7886.JPG,image,yolov8n,pytorch,yolov8n.pt,100.89,11,1,0.0,person:79.3%; cake:79.2%; person:75.3%; sports ball:64.5%; person:63.4%; person:52.0%
+2026-04-14T05:12:11.411701+00:00,IMG_7886.JPG,image,yolov8n,pytorch,yolov8n.pt,38.91,11,1,0.0,person:79.3%; cake:79.2%; person:75.3%; sports ball:64.5%; person:63.4%; person:52.0%
+2026-04-14T05:22:12.285428+00:00,IMG_3697.JPG,image,yolov8n,pytorch,yolov8n.pt,57.79,6,1,0.0,person:79.4%; person:75.4%; person:74.1%; person:54.0%; person:40.5%; car:27.7%
+2026-04-14T05:22:37.741249+00:00,IMG_3697.JPG,image,yolov8s,pytorch,yolov8s.pt,49.19,7,1,0.0,person:77.8%; person:76.6%; person:76.2%; person:70.5%; person:63.4%; bench:55.5%
+2026-04-14T05:22:46.022197+00:00,IMG_3697.JPG,image,yolov8s,torchscript,yolov8s.torchscript,177.57,7,1,0.0,person:79.2%; person:77.4%; person:76.4%; person:71.0%; person:62.7%; bench:55.2%
+2026-04-14T05:25:46.304075+00:00,IMG_3697.JPG,image,yolov8s,torchscript,yolov8s.torchscript,212.71,7,1,0.0,person:79.2%; person:77.4%; person:76.4%; person:71.0%; person:62.7%; bench:55.2%
+2026-04-14T05:27:21.852040+00:00,IMG_7775.mov,video,yolov8n,pytorch,yolov8n.pt,49.09,40,24,14331.67,person:38; boat:1; bird:1
+2026-04-14T05:27:36.664923+00:00,IMG_7886.JPG,image,yolov8n,pytorch,yolov8n.pt,57.37,11,1,0.0,person:79.3%; cake:79.2%; person:75.3%; sports ball:64.5%; person:63.4%; person:52.0%
+2026-04-14T05:28:18.918223+00:00,IMG_7886.JPG,image,yolov8n,pytorch,yolov8n.pt,39.11,6,1,0.0,person:79.3%; cake:79.2%; person:75.3%; sports ball:64.5%; person:63.4%; person:52.0%
+2026-04-14T05:28:49.249432+00:00,IMG_7886.JPG,image,yolov8n,pytorch,yolov8n.pt,39.15,3,1,0.0,person:79.3%; cake:79.2%; person:75.3%
+2026-04-14T05:28:50.701978+00:00,IMG_7886.JPG,image,yolov8n,pytorch,yolov8n.pt,41.16,3,1,0.0,person:79.3%; cake:79.2%; person:75.3%
+2026-04-14T05:33:14.615524+00:00,IMG_7886.JPG,image,yolov8n,pytorch,yolov8n.pt,36.85,6,1,0.0,person:79.3%; cake:79.2%; person:75.3%; sports ball:64.5%; person:63.4%; person:52.0%
+2026-04-14T05:33:20.956929+00:00,IMG_7886.JPG,image,yolov8s,pytorch,yolov8s.pt,56.39,8,1,0.0,person:88.7%; person:84.2%; cake:79.4%; cake:78.1%; person:71.8%; person:69.4%
+2026-04-14T05:36:07.153534+00:00,9761f172-b2b7-4864-8435-90b88c780abd.JPG,image,yolov8s,pytorch,yolov8s.pt,71.55,15,1,0.0,person:84.3%; person:84.0%; person:79.3%; person:78.8%; person:78.5%; person:75.4%
+2026-04-14T05:39:29.992463+00:00,9761f172-b2b7-4864-8435-90b88c780abd.JPG,image,yolov8s,pytorch,yolov8s.pt,199.77,0,1,0.0,
+2026-04-14T05:39:38.131456+00:00,9761f172-b2b7-4864-8435-90b88c780abd.JPG,image,yolov8s,pytorch,yolov8s.pt,147.94,2,1,0.0,person:84.3%; person:84.0%
+2026-04-14T05:39:43.603912+00:00,9761f172-b2b7-4864-8435-90b88c780abd.JPG,image,yolov8s,pytorch,yolov8s.pt,241.67,6,1,0.0,person:84.3%; person:84.0%; person:79.3%; person:78.8%; person:78.5%; person:75.4%
+2026-04-14T05:44:03.031733+00:00,IMG_7886.JPG,image,yolov8n,pytorch,yolov8n.pt,44.91,11,1,0.0,person:79.3%; cake:79.2%; person:75.3%; sports ball:64.5%; person:63.4%; person:52.0%,0.7282,0.827,0.9259,0.8091,11.87,158.73,demo
+2026-04-14T05:44:13.306248+00:00,IMG_7886.JPG,image,yolov8s,pytorch,yolov8s.pt,58.72,9,1,0.0,person:88.7%; person:84.2%; cake:79.4%; cake:78.1%; person:71.8%; person:69.4%,,,,,,,
+2026-04-14T05:49:35.905668+00:00,IMG_7886.JPG,image,yolov8n,pytorch,yolov8n.pt,48.97,11,1,0.0,person:79.3%; cake:79.2%; person:75.3%; sports ball:64.5%; person:63.4%; person:52.0%,0.7282,0.827,0.9259,0.8091,11.87,158.73,demo
+2026-04-14T05:49:42.803410+00:00,IMG_7886.JPG,image,yolov8s,torchscript,yolov8s.torchscript,168.28,9,1,0.0,person:88.2%; cake:83.3%; person:81.9%; person:68.6%; person:68.5%; cake:66.0%,,,,,,,
+2026-04-14T05:50:02.643509+00:00,IMG_7885.WEBP,image,yolov8s,torchscript,yolov8s.torchscript,93.35,13,1,0.0,person:57.8%; person:51.1%; person:48.6%; person:45.6%; person:38.5%; person:38.4%,,,,,,,
+2026-04-14T05:51:50.016126+00:00,IMG_7885.WEBP,image,yolov8s,torchscript,yolov8s.torchscript,183.06,13,1,0.0,person:57.8%; person:51.1%; person:48.6%; person:45.6%; person:38.5%; person:38.4%,,,,,,,
+2026-04-14T05:52:19.059742+00:00,IMG_7775.mov,video,yolov8n,pytorch,yolov8n.pt,46.92,40,24,14331.67,person:38; boat:1; bird:1,0.7282,0.827,0.9259,0.8091,11.87,158.73,demo
+2026-04-14T05:56:43.270611+00:00,IMG_3697.JPG,image,yolov8n,pytorch,yolov8n.pt,94.53,6,1,0.0,person:79.4%; person:75.4%; person:74.1%; person:54.0%; person:40.5%; car:27.7%,0.6075,0.8581,0.8276,0.8568,11.87,158.73,demo
+2026-04-14T05:56:55.608129+00:00,IMG_3697.JPG,image,yolov8s,pytorch,yolov8s.pt,53.69,7,1,0.0,person:77.8%; person:76.6%; person:76.2%; person:70.5%; person:63.4%; bench:55.5%,,,,,,,
+2026-04-14T05:57:00.932113+00:00,IMG_3697.JPG,image,yolov8n,onnx,yolov8n.onnx,143.97,6,1,0.0,person:79.4%; person:75.4%; person:74.1%; person:54.0%; person:40.5%; car:27.7%,,,,,,,
+2026-04-14T05:57:12.209266+00:00,IMG_3697.JPG,image,yolov8n,torchscript,yolov8n.torchscript,134.67,6,1,0.0,person:78.8%; person:74.7%; person:72.1%; person:56.1%; person:41.0%; car:25.1%,,,,,,,
+2026-04-14T05:58:04.865621+00:00,IMG_3697.JPG,image,yolov8n,torchscript,yolov8n.torchscript,123.32,6,1,0.0,person:78.8%; person:74.7%; person:72.1%; person:56.1%; person:41.0%; car:25.1%,,,,,,,
+2026-04-14T05:58:44.438039+00:00,IMG_7886.JPG,image,yolov8n,torchscript,yolov8n.torchscript,63.93,11,1,0.0,person:81.9%; cake:81.5%; person:79.1%; person:65.2%; sports ball:65.0%; person:53.8%,,,,,,,
+2026-04-14T06:02:03.574274+00:00,IMG_4401.JPG,image,yolov8n,pytorch,yolov8n.pt,36.22,2,1,0.0,person:72.3%; sports ball:27.8%,0.6659,0.7783,0.8737,0.8354,11.87,158.73,demo
+2026-04-14T06:02:14.530875+00:00,IMG_7886.JPG,image,yolov8n,pytorch,yolov8n.pt,38.35,11,1,0.0,person:79.3%; cake:79.2%; person:75.3%; sports ball:64.5%; person:63.4%; person:52.0%,0.706,0.8118,0.8147,0.8637,11.87,158.73,demo

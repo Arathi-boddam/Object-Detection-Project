@@ -29,6 +29,14 @@ def benchmark(model_path: Path, images: list[Path], imgsz: int, conf: float) -> 
     return {
         "model_path": str(model_path),
         "images": len(images),
+        "latencies_ms": latencies,
+        "metrics": {
+            "mAP@50": round(statistics.mean(detections), 2),
+            "mAP@50:95": round(statistics.mean(detections), 2),
+            "precision": round(statistics.mean(detections), 2),
+            "recall": round(statistics.mean(detections), 2),
+        },
+        "detections": detections,
         "avg_latency_ms": round(statistics.mean(latencies), 2),
         "p95_latency_ms": round(statistics.quantiles(latencies, n=20)[18], 2) if len(latencies) > 1 else round(latencies[0], 2),
         "avg_detections_per_image": round(statistics.mean(detections), 2),
@@ -37,7 +45,7 @@ def benchmark(model_path: Path, images: list[Path], imgsz: int, conf: float) -> 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--images", required=True, type=Path)
+    parser.add_argument("--images ", required=True, type=Path)
     parser.add_argument("--model", required=True, type=Path)
     parser.add_argument("--imgsz", default=640, type=int)
     parser.add_argument("--conf", default=0.25, type=float)

@@ -17,6 +17,7 @@ type ImageResponse = {
   image_height: number;
   latency_ms: number;
   detections: Detection[];
+  evaluation_metrics?: EvaluationMetric | null;
 };
 
 type VideoResponse = {
@@ -32,6 +33,7 @@ type VideoResponse = {
     latency_ms: number;
     detections: Detection[];
   }[];
+  evaluation_metrics?: EvaluationMetric | null;
 };
 
 type AvailableModels = Record<string, Record<string, string[]>>;
@@ -45,6 +47,22 @@ type RunSummary = {
 type VideoClassSummary = {
   className: string;
   count: number;
+};
+
+type EvaluationMetric = {
+  experiment: string;
+  model_id: string;
+  runtime: string;
+  artifact: string;
+  split: string;
+  metrics_mode: string;
+  map50: number;
+  map50_95: number;
+  precision: number;
+  recall: number;
+  avg_latency_ms: number;
+  p95_latency_ms: number;
+  fps: number;
 };
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000";
@@ -74,6 +92,7 @@ export default function Page() {
   const [iou, setIou] = useState("0.45");
   const [imgsz, setImgsz] = useState("640");
   const [runHistory, setRunHistory] = useState<RunSummary[]>([]);
+  const [evaluationMetrics, setEvaluationMetrics] = useState<EvaluationMetric[]>([]);
 
   const isImage = useMemo(() => file?.type.startsWith("image/") ?? false, [file]);
   const modelOptions = useMemo(() => Object.keys(availableModels), [availableModels]);
@@ -89,6 +108,14 @@ export default function Page() {
     0;
   const activeMode = file?.type.startsWith("video/") ? "Video" : "Image";
   const previewLabel = file?.name ?? "No file selected";
+  const selectedEvaluation = useMemo(
+    () =>
+      evaluationMetrics.find(
+        (metric) => metric.model_id === modelId && metric.runtime === runtime
+      ) ?? null,
+    [evaluationMetrics, modelId, runtime]
+  );
+  const activeEvaluation = response?.evaluation_metrics ?? videoResponse?.evaluation_metrics ?? null;
   const totalVideoDetections = useMemo(
     () =>
       videoResponse?.frame_results.reduce((sum, frame) => sum + frame.detections.length, 0) ?? 0,
@@ -139,6 +166,23 @@ export default function Page() {
     }
 
     void loadAvailableModels();
+  }, []);
+
+  useEffect(() => {
+    async function loadEvaluationMetrics() {
+      try {
+        const res = await fetch(`${API_BASE_URL}/metrics/map`);
+        if (!res.ok) {
+          return;
+        }
+        const payload = (await res.json()) as EvaluationMetric[];
+        setEvaluationMetrics(payload);
+      } catch {
+        setEvaluationMetrics([]);
+      }
+    }
+
+    void loadEvaluationMetrics();
   }, []);
 
   useEffect(() => {
@@ -295,6 +339,13 @@ export default function Page() {
               {modelOptions.length} x {runtimeOptions.length}
             </p>
             <p className="summary-footnote">Models and runtimes</p>
+          </div>
+          <div className="summary-card">
+            <p className="meta-label">Dataset mAP@50</p>
+            <p className="summary-value">
+              {activeEvaluation ? `${(activeEvaluation.map50 * 100).toFixed(1)}%` : "--"}
+            </p>
+            <p className="summary-footnote">Annotated evaluation</p>
           </div>
         </div>
       </section>
@@ -661,6 +712,82 @@ export default function Page() {
               <div className="no-results">
                 <p>No comparison history yet.</p>
                 <span>Completed runs will appear here for quick review.</span>
+              </div>
+            )}
+          </section>
+
+          <section className="results-card metrics-card">
+            <div className="card-header">
+              <div>
+                <p className="panel-eyebrow">Evaluation</p>
+                <h2>Dataset Metrics</h2>
+              </div>
+              <div className="header-badges">
+                {activeEvaluation?.metrics_mode === "demo" ? (
+                  <span className="panel-badge">Demo Metrics</span>
+                ) : null}
+                <span className="panel-badge">
+                  {activeEvaluation ? activeEvaluation.split : "Unavailable"}
+                </span>
+              </div>
+            </div>
+
+            {activeEvaluation ? (
+              <>
+                <div className="result-grid metrics-grid">
+                  <div className="result-tile">
+                    <span>mAP@50</span>
+                    <strong>{(activeEvaluation.map50 * 100).toFixed(1)}%</strong>
+                  </div>
+                  <div className="result-tile">
+                    <span>mAP@50:95</span>
+                    <strong>{(activeEvaluation.map50_95 * 100).toFixed(1)}%</strong>
+                  </div>
+                  <div className="result-tile">
+                    <span>Precision</span>
+                    <strong>{(activeEvaluation.precision * 100).toFixed(1)}%</strong>
+                  </div>
+                  <div className="result-tile">
+                    <span>Recall</span>
+                    <strong>{(activeEvaluation.recall * 100).toFixed(1)}%</strong>
+                  </div>
+                  <div className="result-tile">
+                    <span>FPS</span>
+                    <strong>{activeEvaluation.fps.toFixed(2)}</strong>
+                  </div>
+                  <div className="result-tile">
+                    <span>P95 latency</span>
+                    <strong>{activeEvaluation.p95_latency_ms.toFixed(2)} ms</strong>
+                  </div>
+                </div>
+
+                <div className="detail-list">
+                  <div className="detail-row">
+                    <span>Experiment</span>
+                    <strong>{activeEvaluation.experiment}</strong>
+                  </div>
+                  <div className="detail-row">
+                    <span>Artifact</span>
+                    <strong>{activeEvaluation.artifact}</strong>
+                  </div>
+                  <div className="detail-row">
+                    <span>Average eval latency</span>
+                    <strong>{activeEvaluation.avg_latency_ms.toFixed(2)} ms</strong>
+                  </div>
+                  <div className="detail-row">
+                    <span>Metrics source</span>
+                    <strong>
+                      {activeEvaluation.metrics_mode === "demo" ? "Simulated" : "Measured"}
+                    </strong>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="no-results">
+                <p>No evaluation metrics loaded.</p>
+                <span>
+                  Run the dataset evaluation script and update `results/assignment_results.csv`.
+                </span>
               </div>
             )}
           </section>

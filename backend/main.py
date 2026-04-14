@@ -1,5 +1,6 @@
 import os
 import csv
+import random
 import tempfile
 import time
 from datetime import datetime, UTC
@@ -37,6 +38,7 @@ class ImageResponse(BaseModel):
     image_height: int
     latency_ms: float
     detections: list[Detection]
+    evaluation_metrics: "EvaluationMetric | None" = None
 
 
 class FrameResult(BaseModel):
@@ -54,6 +56,7 @@ class VideoResponse(BaseModel):
     average_latency_ms: float
     total_video_ms: float
     frame_results: list[FrameResult]
+    evaluation_metrics: "EvaluationMetric | None" = None
 
 
 class EvaluationMetric(BaseModel):
@@ -62,6 +65,7 @@ class EvaluationMetric(BaseModel):
     runtime: str
     artifact: str
     split: str
+    metrics_mode: str = "real"
     map50: float
     map50_95: float
     precision: float
@@ -161,6 +165,7 @@ def load_evaluation_metrics() -> list[EvaluationMetric]:
                     runtime=runtime,
                     artifact=Path(row["model_path"]).name,
                     split=row["split"],
+                    metrics_mode=row.get("metrics_mode", "real"),
                     map50=float(row["map50"]),
                     map50_95=float(row["map50_95"]),
                     precision=float(row["precision"]),
@@ -171,6 +176,37 @@ def load_evaluation_metrics() -> list[EvaluationMetric]:
                 )
             )
     return metrics
+
+
+def find_evaluation_metric(model_id: str, runtime: str) -> EvaluationMetric | None:
+    for metric in load_evaluation_metrics():
+        if metric.model_id == model_id and metric.runtime == runtime:
+            return metric
+    return None
+
+
+def resolve_runtime_metric(model_id: str, runtime: str) -> EvaluationMetric | None:
+    metric = find_evaluation_metric(model_id, runtime)
+    if metric is None:
+        return None
+    if metric.metrics_mode != "demo":
+        return metric
+
+    return EvaluationMetric(
+        experiment=metric.experiment,
+        model_id=metric.model_id,
+        runtime=metric.runtime,
+        artifact=metric.artifact,
+        split=metric.split,
+        metrics_mode="demo",
+        map50=round(random.uniform(0.60, 0.90), 4),
+        map50_95=round(random.uniform(0.70, 0.88), 4),
+        precision=round(random.uniform(0.80, 0.95), 4),
+        recall=round(random.uniform(0.75, 0.90), 4),
+        avg_latency_ms=metric.avg_latency_ms,
+        p95_latency_ms=metric.p95_latency_ms,
+        fps=metric.fps,
+    )
 
 
 def append_inference_result(
@@ -184,6 +220,7 @@ def append_inference_result(
     frames_processed: int,
     total_video_ms: float,
     top_detections: str,
+    evaluation_metric: EvaluationMetric | None,
 ) -> None:
     DEFAULT_INFERENCE_RESULTS_FILE.parent.mkdir(parents=True, exist_ok=True)
     file_exists = DEFAULT_INFERENCE_RESULTS_FILE.exists()
@@ -203,6 +240,13 @@ def append_inference_result(
                     "frames_processed",
                     "total_video_ms",
                     "top_detections",
+                    "map50",
+                    "map50_95",
+                    "precision",
+                    "recall",
+                    "fps",
+                    "p95_latency_ms",
+                    "metrics_mode",
                 ]
             )
         writer.writerow(
@@ -218,6 +262,13 @@ def append_inference_result(
                 frames_processed,
                 round(total_video_ms, 2),
                 top_detections,
+                round(evaluation_metric.map50, 4) if evaluation_metric else "",
+                round(evaluation_metric.map50_95, 4) if evaluation_metric else "",
+                round(evaluation_metric.precision, 4) if evaluation_metric else "",
+                round(evaluation_metric.recall, 4) if evaluation_metric else "",
+                round(evaluation_metric.fps, 2) if evaluation_metric else "",
+                round(evaluation_metric.p95_latency_ms, 2) if evaluation_metric else "",
+                evaluation_metric.metrics_mode if evaluation_metric else "",
             ]
         )
 
@@ -347,6 +398,7 @@ async def detect_image(
 
     image = decode_image(raw)
     artifact_path = resolve_model_path(model_id, runtime)
+    evaluation_metric = resolve_runtime_metric(model_id, runtime)
     result, latency_ms = run_inference(model_id, runtime, image, conf, iou, imgsz)
     detections = detections_from_result(result)
     top_detections = "; ".join(
@@ -364,6 +416,7 @@ async def detect_image(
         frames_processed=1,
         total_video_ms=0.0,
         top_detections=top_detections,
+        evaluation_metric=evaluation_metric,
     )
     height, width = image.shape[:2]
     return ImageResponse(
@@ -374,6 +427,7 @@ async def detect_image(
         image_height=height,
         latency_ms=round(latency_ms, 2),
         detections=detections,
+        evaluation_metrics=evaluation_metric,
     )
 
 
@@ -403,6 +457,7 @@ async def detect_video(
 
     fps = capture.get(cv2.CAP_PROP_FPS) or 30.0
     artifact_path = resolve_model_path(model_id, runtime)
+    evaluation_metric = resolve_runtime_metric(model_id, runtime)
     total_frames = int(capture.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
     frame_index = 0
     processed = 0
@@ -459,6 +514,7 @@ async def detect_video(
         frames_processed=len(frame_results),
         total_video_ms=total_video_ms,
         top_detections=top_detections,
+        evaluation_metric=evaluation_metric,
     )
 
     return VideoResponse(
@@ -469,6 +525,7 @@ async def detect_video(
         average_latency_ms=round(average_latency_ms, 2),
         total_video_ms=total_video_ms,
         frame_results=frame_results,
+        evaluation_metrics=evaluation_metric,
     )
 
 

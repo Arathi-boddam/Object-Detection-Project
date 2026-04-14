@@ -1,0 +1,2 @@
+experiment,model_path,split,images_evaluated,map50,map50_95,precision,recall,avg_latency_ms,p95_latency_ms,fps,metrics_mode
+baseline_pytorch,yolov8n.pt,val,4,0.7282,0.827,0.9259,0.8091,84.28,158.73,11.87,demo

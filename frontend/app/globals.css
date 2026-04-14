@@ -222,6 +222,13 @@ body {
   margin-bottom: 18px;
 }
 
+.header-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
 .panel-heading h2,
 .card-header h2,
 .empty-state h2 {
@@ -347,6 +354,10 @@ body {
   grid-area: history;
 }
 
+.metrics-card {
+  grid-column: 1 / -1;
+}
+
 .image-stage {
   display: flex;
   justify-content: center;
@@ -432,6 +443,10 @@ body {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
   margin-bottom: 16px;
+}
+
+.metrics-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .result-tile {

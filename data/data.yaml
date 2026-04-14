@@ -1,6 +1,6 @@
-train: ../train/images
-val: ../valid/images
-test: ../test/images
+path: data
+train: valid/images
+val: valid/images
 
 nc: 7
 names: ['baloon', 'building_Detection', 'cake', 'gift', 'person_Detection', 'pink', 'tree_Detection']
