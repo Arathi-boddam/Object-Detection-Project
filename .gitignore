@@ -11,3 +11,4 @@ runs/
 data/voc_dataset/
 yolov8n.pt
 yolov8s.pt
+clean-push-test/
